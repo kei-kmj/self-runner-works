@@ -1,0 +1,46 @@
+name: Health Check (py_sample)
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "py_sample/**"
+      - ".github/workflows/py-sample-healthcheck.yml"
+    tags-ignore:
+      - "**"
+
+jobs:
+  # --- まず軽いチェックだけ GitHub ホストランナーで動かす ---
+  syntax-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Test workflow syntax
+        run: echo "Workflow syntax OK & ubuntu runner is available."
+
+  # --- 実際に EC2 (self-hosted runner) で実行するジョブ ---
+  healthcheck-py-sample:
+    needs: syntax-check
+    runs-on: [self-hosted, linux, ec2]
+    timeout-minutes: 3
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Show Docker & Compose version
+        run: |
+          docker version
+          docker compose version
+
+      - name: Build py_sample service
+        run: |
+          docker compose build py_sample
+
+      - name: Run py_sample health check
+        run: |
+          docker compose run --rm py_sample

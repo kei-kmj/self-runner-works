@@ -1,0 +1,10 @@
+version: "3.9"
+
+services:
+  py_sample:
+    build: ./py_sample
+    container_name: py_sample
+
+  health_check:
+    build: ./sample
+    container_name: health_check

@@ -1,0 +1,35 @@
+name: Health Check
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "sample/**"
+      - ".github/workflows/shell-healthcheck.yml"
+    tags-ignore:
+      - "**"
+
+jobs:
+  syntax-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo "Workflow syntax OK (shell)."
+
+  healthcheck-shell:
+    needs: syntax-check
+    runs-on: [self-hosted, linux, ec2]
+    timeout-minutes: 3
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build health_check service
+        run: |
+          docker compose build health_check
+
+      - name: Run health_check
+        run: |
+          docker compose run --rm health_check
