@@ -5,7 +5,7 @@ on:
   push:
     paths:
       - "sample/**"
-      - ".github/workflows/shell-healthcheck.yml"
+      - ".github/workflows/shell.yml"
     tags-ignore:
       - "**"
 
@@ -20,7 +20,7 @@ jobs:
 
   healthcheck-shell:
     needs: syntax-check
-    runs-on: self-hosted
+    runs-on: [self-hosted, linux, ec2]
     timeout-minutes: 3
 
     steps:

@@ -5,7 +5,7 @@ on:
   push:
     paths:
       - "py_sample/**"
-      - ".github/workflows/py-sample-healthcheck.yml"
+      - ".github/workflows/py.yml"
     tags-ignore:
       - "**"
 
@@ -25,7 +25,7 @@ jobs:
   # --- 実際に EC2 (self-hosted runner) で実行するジョブ ---
   healthcheck-py-sample:
     needs: syntax-check
-    runs-on: self-hosted
+    runs-on: [self-hosted, linux, ec2]
     timeout-minutes: 3
 
     steps:
