@@ -20,7 +20,7 @@ jobs:
 
   healthcheck-shell:
     needs: syntax-check
-    runs-on: self-hosted
+    runs-on: [self-hosted, linux, ARM64]
     timeout-minutes: 3
 
     steps:
