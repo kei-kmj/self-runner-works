@@ -20,7 +20,7 @@ jobs:
 
   healthcheck-shell:
     needs: syntax-check
-    runs-on: [self-hosted, linux, ec2]
+    runs-on: self-hosted
     timeout-minutes: 3
 
     steps:
