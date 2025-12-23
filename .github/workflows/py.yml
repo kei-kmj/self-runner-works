@@ -26,6 +26,7 @@ jobs:
   healthcheck-py-sample:
     needs: syntax-check
     runs-on: [self-hosted, health-check-py]
+
     timeout-minutes: 3
 
     steps:
